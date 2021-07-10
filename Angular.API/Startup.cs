@@ -35,7 +35,10 @@ namespace Angular.API
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddDbContext<ApplicationDbContext>(options => { options.UseSqlServer(Configuration.GetConnectionString("default")); });
+            services.AddDbContext<ApplicationDbContext>(options =>
+            { options.UseSqlServer(Configuration.GetConnectionString("default")); });
+
+            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -56,6 +59,13 @@ namespace Angular.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(option => {
+                option.AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin()
+                .WithOrigins("https://localhost:4200");
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();

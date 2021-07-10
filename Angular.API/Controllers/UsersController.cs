@@ -59,6 +59,8 @@ namespace Angular.API.Controllers
         [HttpGet]
         public async Task<IEnumerable<ApplicationUser>> Get()
         {
+            //await CreateRoles();
+            //await CreateUsers();
             return await _userManager
                 .Users.Cast<ApplicationUser>()
                 .ToListAsync();

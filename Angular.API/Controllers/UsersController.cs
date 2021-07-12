@@ -1,4 +1,6 @@
 ﻿using Angular.API.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,20 +15,15 @@ namespace Angular.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseAPIController
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
 
 
-        public UsersController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<IdentityUser> signInManager)
+        public UsersController(ApplicationDbContext context
+            , UserManager<IdentityUser> userManager
+            , RoleManager<IdentityRole> roleManager
+            , SignInManager<IdentityUser> signInManager) : base(context, userManager, roleManager, signInManager)
         {
-            _context = context;
-            _signInManager = signInManager;
-            _roleManager = roleManager;
-            _userManager = userManager;
         }
         // GET: api/<UsersController>
 
@@ -57,6 +54,7 @@ namespace Angular.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IEnumerable<ApplicationUser>> Get()
         {
             //await CreateRoles();

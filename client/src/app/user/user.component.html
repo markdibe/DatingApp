@@ -1,0 +1,11 @@
+<div class="card" *ngFor="let item of users;">
+    <div class="card-header">
+      {{item.userName}}
+    </div>
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <p>{{item.email}}</p>
+        <footer class="blockquote-footer">{{item.normalizedUserName}} <cite title="Source Title">{{item.firstName}} {{item.fatherName}} {{item.lastName}}</cite></footer>
+      </blockquote>
+    </div>
+  </div>

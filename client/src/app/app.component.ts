@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { User } from './_models/user';
+import { AccountService } from './_services/account.service';
 
 @Component({
   selector: 'app-root',
@@ -10,31 +12,20 @@ export class AppComponent implements OnInit {
   title = 'client';
 
   //create a constructor and inject http client service just like dot net core
-  constructor(private http: HttpClient) {
+  constructor(private accountService:AccountService) {
 
-   }
-
-  // remove type safety
-  users:any;
-
-  ngOnInit() {
-    this.getUsers();
   }
 
-  getUsers() {
-    this.http.get("https://localhost:44336/api/users/get")
-      //subscribe
-      .subscribe(
-        //case success
-        (response) => {
-          this.users = response;
-        },
-        //case error
-        (error) => { console.log(error) }
-        //finally completed
-        , () => {
-          console.log("completed")
-        });
+  // remove type safety
+  users: any;
+
+  ngOnInit() {
+    this.setCurrentUser();
+  }
+
+  setCurrentUser() {
+    const user: User = JSON.parse(localStorage.getItem("user") || '{}') as User;
+    this.accountService.setCurrentUser(user);
   }
 
 

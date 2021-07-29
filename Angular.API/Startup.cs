@@ -1,6 +1,7 @@
 using Angular.API.Entities;
 using Angular.API.Extensions;
 using Angular.API.Interfaces;
+using Angular.API.MiddleWare;
 using Angular.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -38,9 +39,10 @@ namespace Angular.API
         {
             services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
-          
+
             services.AddCors();
             services.AddControllers();
+                //.AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Angular.API", Version = "v1" });
@@ -50,9 +52,11 @@ namespace Angular.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseApiExceptionMiddleWare();
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Angular.API v1"));
             }

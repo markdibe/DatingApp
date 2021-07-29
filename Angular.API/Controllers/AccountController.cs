@@ -53,7 +53,11 @@ namespace Angular.API.Controllers
                 }
                 return BadRequest("Could not add user to role user");
             }
-            return BadRequest("Could not create a user");
+            foreach (var error in created.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return BadRequest(ModelState.Values.Select(x => x.Errors.Select(x => x.ErrorMessage)));
         }
 
         [HttpPost("[action]")]

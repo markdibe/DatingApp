@@ -1,4 +1,6 @@
-﻿using Angular.API.Entities;
+﻿using Angular.API.DTO;
+using Angular.API.Entities;
+using Angular.API.Helpers;
 using Angular.API.Interfaces;
 using Angular.API.Services;
 using Microsoft.AspNetCore.Identity;
@@ -17,10 +19,11 @@ namespace Angular.API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<ITokenService, TokenService>();
-
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
            
             services.AddDbContext<ApplicationDbContext>(options =>
             { options.UseSqlServer(config.GetConnectionString("default")); });
+            services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
     }

@@ -1,15 +1,21 @@
-﻿using Angular.API.Extensions;
-using Microsoft.AspNetCore.Identity;
+﻿using Angular.API.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Angular.API.Entities
+namespace Angular.API.DTO
 {
-    public class ApplicationUser : IdentityUser
+    public class MemberDTO
     {
+
+
+        public string Username { get; set; }
+
+        public string PhotoUrl { get; set; }
+        public int Age { get; set; }
+
         [StringLength(250)]
         public string FirstName { get; set; }
         [StringLength(250)]
@@ -19,13 +25,11 @@ namespace Angular.API.Entities
         [StringLength(250)]
         public string MotherName { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
-
         public string KnownAs { get; set; }
 
-        public DateTime Created { get; set; } = DateTime.Now;
+        public DateTime Created { get; set; } 
 
-        public DateTime LastActive { get; set; } = DateTime.Now;
+        public DateTime LastActive { get; set; } 
 
         public string Gender { get; set; }
 
@@ -37,13 +41,6 @@ namespace Angular.API.Entities
 
         public string Country { get; set; }
 
-        public ICollection<Photo> Photos { get; set; }
-
-        //public int GetAge()
-        //{
-        //    return this.DateOfBirth.CalculateAge();
-        //}
-
-
+        public ICollection<PhotoDTO> Photos { get; set; }
     }
 }

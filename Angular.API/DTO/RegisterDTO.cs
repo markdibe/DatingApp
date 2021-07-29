@@ -14,7 +14,7 @@ namespace Angular.API.DTO
         public string UserName { get; set; }
 
         [DataType(DataType.Password)]
-        [StringLength(26)]
+        [StringLength(8, MinimumLength = 4)]
         [Required]
         public string Password { get; set; }
     }

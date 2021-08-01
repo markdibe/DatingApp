@@ -4,12 +4,13 @@ import { map } from 'rxjs/operators';
 import { User } from '../_models/user';
 import { ReplaySubject } from 'rxjs';
 import { unary } from '@angular/compiler/src/output/output_ast';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = "https://localhost:44336/api/"
+  baseUrl = environment.apiUrl;
   constructor(private http: HttpClient) { }
   //creating a buffer object as replaySubject 
   currentUserSource = new ReplaySubject<User>(1);
@@ -31,7 +32,7 @@ export class AccountService {
       .pipe(
         map((user: User) => {
           if (user) {
-            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("user", JSON.stringify(user));            
             this.currentUserSource.next(user);
           }
           return user;

@@ -27,7 +27,7 @@ namespace Angular.API.Services
             var userRoles = await _userManager.GetRolesAsync(user);
             var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.NameId,user.Email),
+                new Claim(ClaimTypes.Name,user.UserName),
             };
             foreach(var role in userRoles)
             {

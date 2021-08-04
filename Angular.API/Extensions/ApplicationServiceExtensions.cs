@@ -18,9 +18,10 @@ namespace Angular.API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
+            services.Configure<CloudinarySetting>(config.GetSection("CloudinarySettings"));
             services.AddScoped<ITokenService, TokenService>();
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-           
+            services.AddScoped<IPhotoService, PhotoService>();
             services.AddDbContext<ApplicationDbContext>(options =>
             { options.UseSqlServer(config.GetConnectionString("default")); });
             services.AddScoped<IUserRepository, UserRepository>();

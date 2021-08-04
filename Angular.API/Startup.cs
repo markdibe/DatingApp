@@ -19,7 +19,9 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,11 +44,13 @@ namespace Angular.API
 
             services.AddCors();
             services.AddControllers();
-                //.AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve);
+            //.AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Angular.API", Version = "v1" });
+
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +66,7 @@ namespace Angular.API
             }
 
             app.UseHttpsRedirection();
+
 
             app.UseRouting();
 

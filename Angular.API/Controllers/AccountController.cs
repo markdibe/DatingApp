@@ -4,6 +4,7 @@ using Angular.API.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 //using Newtonsoft.Json.Linq;
 using System;
@@ -48,7 +49,8 @@ namespace Angular.API.Controllers
                     return StatusCode(StatusCodes.Status201Created, new UserDTO
                     {
                         UserName = model.UserName,
-                        Token = await _token.CreateToken(user)
+                        Token = await _token.CreateToken(user),
+                        PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
                     });
                 }
                 return BadRequest("Could not add user to role user");
@@ -63,21 +65,29 @@ namespace Angular.API.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult<UserDTO>> Login([FromBody] LoginDTO model)
         {
-            var user = await _userManager.FindByEmailAsync(model.UserName);
+            //var user = await _userManager.Fin(model.UserName);]
+            var user = await _context.ApplicationUsers
+                .Include(x=>x.Photos)
+                .Where(x => x.UserName.ToLower().TrimEnd()
+            .Equals(model.UserName.TrimEnd().ToLower()))
+                .FirstOrDefaultAsync();
+            
             if (user == null)
             {
                 return Unauthorized($"Invalid UserName: {model.UserName}");
             }
-            var signIn = await _signInManager.PasswordSignInAsync(user, model.Password, isPersistent: true, lockoutOnFailure: false);
-            if (signIn.Succeeded)
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password,isPersistent:true,lockoutOnFailure:false);
+            if (result.Succeeded)
             {
                 return StatusCode(StatusCodes.Status200OK, new UserDTO
                 {
                     UserName = model.UserName,
-                    Token = await _token.CreateToken((ApplicationUser)user)
+                    Token = await _token.CreateToken((ApplicationUser)user),
+                    PhotoUrl = user.Photos.FirstOrDefault(x=>x.IsMain)?.Url
                 });
             }
             return Forbid();
+            
         }
     }
 }

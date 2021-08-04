@@ -1,0 +1,24 @@
+<div class="row">
+
+    <ng-container *ngFor="let item of member.photos">
+        <div class="col-2">
+            <img src="{{item.url}}" alt="{{item.url}}" class="img-thumbnail p-1">
+            <div class="text-center">
+
+                <button [disabled]="item.isMain" (click)="setMainPhoto(item)" [ngClass]="item.isMain? 'btn-success active':'btn-outline-success'">Main</button>
+                <button class="btn btn-danger btn-sm" (click)="deletePhoto(item)"><i class="fa fa-trash"></i></button>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <form #uploadForm="ngForm" (ngSubmit)="uploadFile()" id="uploadForm">
+            <input type="file" name="profileImage" id="profileImage" (change)="onFileChange($event)" class="form-control border border-info">
+        </form>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-primary text-white" type="submit" form="uploadForm">Upload</button>
+    </div>
+</div>

@@ -1,7 +1,15 @@
-.dropdown:hover{
+.dropdown:hover {
     cursor: pointer;
 }
 
-.dropdown-toggle, .dropdown-item{
+.dropdown-toggle,
+.dropdown-item {
     cursor: pointer;
+}
+
+.img {
+    max-height: 50px;
+    border: 2px solid #ffff;
+    display: inline;
+    margin-right: 10px;
 }

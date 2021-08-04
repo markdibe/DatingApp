@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { async } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -9,7 +9,9 @@ import { AccountService } from '../_services/account.service';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  styleUrls: ['./nav.component.css'],
+  encapsulation:ViewEncapsulation.Emulated
+  
 })
 export class NavComponent implements OnInit {
 

@@ -14,9 +14,10 @@
     border-top: none;
 }
 
-.col-4 {
+
+/* .col-4 {
     box-shadow: 0 0 4px 2px rgba(125, 25, 122, 0.45);
-}
+} */
 
 .ngx-gallery-layout {
     display: inline-block;

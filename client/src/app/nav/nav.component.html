@@ -20,21 +20,24 @@
             </li>
         </ul>
         <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
-            <a class="dropdown-toggle text-light" dropdownToggle>Welcome {{user.username | titlecase}} </a>
+            <ng-container *ngIf="user.photoUrl">
+                <img src="{{user?.photoUrl}}" alt="{{user?.photoUrl}}" class="img" />
+            </ng-container>
+            <ng-container *ngIf="!user.photoUrl">
+                <img src="./assets/user.png" alt="./assets/user.png" class="img" />
+            </ng-container>
+            <a class="dropdown-toggle text-light" dropdownToggle>Welcome {{user.userName | titlecase}} </a>
             <div class="dropdown-menu mt-3" *dropdownMenu>
-                <a class="dropdown-item">Edit Profile</a>
+                <a routerLink="/member/edit" class="dropdown-item">Edit Profile</a>
                 <div class="dropdown-divider">
 
                 </div>
                 <a class="dropdown-item" (click)="logout()">Logout</a>
             </div>
         </div>
-        <form *ngIf="(accountService.currentUser$ | async)===undefined" class="form-inline ml-2" #loginForm="ngForm"
-            (ngSubmit)="login()" autocomplete="off">
-            <input class="form-control  m-2" type="email" placeholder="UserName" name="userName"
-                [(ngModel)]="model.userName">
-            <input class="form-control  m-2" type="password" placeholder="Password" name="password"
-                [(ngModel)]="model.password">
+        <form *ngIf="(accountService.currentUser$ | async)===undefined" class="form-inline ml-2" #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off">
+            <input class="form-control  m-2" type="email" placeholder="UserName" name="userName" [(ngModel)]="model.userName">
+            <input class="form-control  m-2" type="password" placeholder="Password" name="password" [(ngModel)]="model.password">
             <button class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
         </form>
 

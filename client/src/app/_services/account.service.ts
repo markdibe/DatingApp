@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { User } from '../_models/user';
-import { ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { unary } from '@angular/compiler/src/output/output_ast';
 import { environment } from 'src/environments/environment';
+import { Photo } from '../_models/photo';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,7 @@ export class AccountService {
     return this.http.post<User>(this.baseUrl + "account/login", model).pipe(
       map((user: User) => {
         if (user) {
-          this.currentUserSource.next(user);
-          localStorage.setItem("user", JSON.stringify(user));
+         this.setCurrentUser(user);
         }
       })
     )
@@ -32,20 +32,30 @@ export class AccountService {
       .pipe(
         map((user: User) => {
           if (user) {
-            localStorage.setItem("user", JSON.stringify(user));            
-            this.currentUserSource.next(user);
+            this.setCurrentUser(user);
           }
           return user;
         }))
   }
 
   setCurrentUser(user: User) {
+    localStorage.setItem("user", JSON.stringify(user));       
     this.currentUserSource.next(user);
   }
 
   logout() {
     localStorage.removeItem("user");
     this.currentUserSource.next(undefined);
+  }
+
+  addFile(data:FormData){
+    let headers = new HttpHeaders();
+    headers.append('content-type','multipart/form-data');
+    headers.append('accept','application/json');
+    const httpOptions = {
+      headers:headers
+    };
+    return this.http.post<Photo>(this.baseUrl+'users/addphoto',data,httpOptions);
   }
 
 }
